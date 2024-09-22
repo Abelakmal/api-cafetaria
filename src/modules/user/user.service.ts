@@ -72,7 +72,7 @@ export class UserService {
   }
 
   public async update(
-    updateUserDto: UpdateUserDto,
+    updateUserDto: Partial<UpdateUserDto>,
     id: number,
     current: Payload,
   ): Promise<User> {
@@ -120,17 +120,17 @@ export class UserService {
       isDelete: false,
     });
 
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
     if (current.username !== user.username && current.role !== 'superadmin') {
       throw new ForbiddenException(
         'You do not have permission to perform this action',
       );
     }
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    user.isDelete = false;
+    user.isDelete = true;
     await this.userRepository.save(user);
   }
 }

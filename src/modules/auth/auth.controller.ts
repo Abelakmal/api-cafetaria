@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import {
   ApiOperation,
   ApiResponse,
@@ -27,6 +27,10 @@ export class AuthController {
       login.username,
       login.password,
     );
+
+    if (!user) {
+      throw new BadRequestException('Invalid credentials');
+    }
 
     return this.authService.login(user);
   }

@@ -80,7 +80,7 @@ export class CafeController {
   @DocUpdateCafe()
   public async updateCafe(
     @Param('id') id: number,
-    @Body() updateCafeDto: UpdateCafeDto,
+    @Body() updateCafeDto: Partial<UpdateCafeDto>,
     @Request() req: any,
   ): Promise<Cafe> {
     return await this.cafeService.update(
@@ -150,7 +150,7 @@ export class CafeController {
   public async updateMenu(
     @Param('cafeId') cafeId: number,
     @Param('menuId') menuId: number,
-    @Body() updateMenuDto: UpdateMenuDto,
+    @Body() updateMenuDto: Partial<UpdateMenuDto>,
     @Request() req: any,
   ): Promise<Menu> {
     return await this.menuService.update(

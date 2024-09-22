@@ -79,7 +79,7 @@ export class CafeService {
   }
 
   public async update(
-    updateCafeDto: UpdateCafeDto,
+    updateCafeDto: Partial<UpdateCafeDto>,
     id: number,
     current: Payload,
   ): Promise<Cafe> {

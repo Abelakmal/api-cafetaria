@@ -70,7 +70,7 @@ export class MenuService {
   public async update(
     cafeId: number,
     menuId: number,
-    updateMenuDto: UpdateMenuDto,
+    updateMenuDto: Partial<UpdateMenuDto>,
     current: Payload,
   ): Promise<Menu> {
     const cafe = await this.cafeService.getById(cafeId);
