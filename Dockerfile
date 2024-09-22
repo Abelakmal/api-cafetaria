@@ -25,6 +25,8 @@ RUN npm install --production
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 3000
+RUN npm run build
 
-CMD ["node", "dist/main"]
+EXPOSE 8080
+
+CMD ["npm", "run", "start:prod"]
