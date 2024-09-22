@@ -1,3 +1,5 @@
+name: Deploy API Cafetaria
+
 on:
   push:
     branches:
@@ -15,3 +17,39 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Deploy to VPS
+        env:
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          NODE_ENV: ${{secrets.NODE_ENV}}
+          PORT: ${{secrets.PORT}}
+          DATABASE_HOST: ${{secrets.DATABASE_HOST}}
+          DATABASE_PORT: ${{secrets.DATABASE_PORT}}
+          DATABASE_USER: ${{secrets.DATABASE_USER}}
+          DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          SERVER: ${{secrets.SERVER}}
+        run: |
+          ssh -o StrictHostKeyChecking=no abelakmal@103.172.204.52 << EOF
+            cd /home/abelakmal/api-cafetaria
+
+            # Pull the latest changes from the main branch
+            git pull origin main
+
+            # Buat file .env dan masukkan secrets dari GitHub
+            echo "DATABASE_PASSWORD=${DATABASE_PASSWORD}" > .env
+            echo "DATABASE_HOST=${DATABASE_HOST}" >> .env
+            echo "DATABASE_PORT=${DATABASE_PORT}" >> .env
+            echo "DATABASE_USER=${DATABASE_USER}" >> .env
+            echo "DATABASE_NAME=${DATABASE_NAME}" >> .env
+            echo "JWT_SECRET_KEY=${JWT_SECRET_KEY}" >> .env
+            echo "SERVER=${SERVER}" >> .env
+            echo "NODE_ENV=${NODE_ENV}" >> .env
+            echo "PORT=${PORT}" >> .env
+
+            # Stop existing Docker containers
+            sudo docker-compose down
+
+            # Build and start Docker containers with the new environment variables
+            sudo docker-compose up -d --build
+          EOF
