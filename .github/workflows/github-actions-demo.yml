@@ -48,8 +48,8 @@ jobs:
             echo "PORT=${PORT}" >> .env
 
             # Stop existing Docker containers
-            sudo docker-compose down
+            sudo docker compose down
 
             # Build and start Docker containers with the new environment variables
-            sudo docker-compose up -d --build
+            sudo docker compose up -d --build
           EOF
