@@ -5,6 +5,26 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
+export const DocGetManager = () => {
+  return function (
+    target: any,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor,
+  ) {
+    ApiBearerAuth()(target, propertyKey, descriptor);
+    ApiOperation({ summary: 'get all Manager' })(
+      target,
+      propertyKey,
+      descriptor,
+    );
+    ApiOperation({
+      summary: 'get all Manager',
+      description:
+        'Only accessible by users with the role of superadmin or owner of cafe',
+    })(target, propertyKey, descriptor);
+  };
+};
+
 export const DocCreateManager = () => {
   return (
     target: any,

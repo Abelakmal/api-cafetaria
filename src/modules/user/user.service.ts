@@ -123,6 +123,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    console.log(current, user);
 
     if (current.username !== user.username && current.role !== 'superadmin') {
       throw new ForbiddenException(

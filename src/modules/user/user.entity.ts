@@ -68,6 +68,6 @@ export class User {
   @Exclude()
   updatedAt: Date;
 
-  @ManyToOne(() => Manager, (manager) => manager.manager)
+  @ManyToOne(() => Manager, (manager) => manager.user)
   managedCafes: Manager[];
 }

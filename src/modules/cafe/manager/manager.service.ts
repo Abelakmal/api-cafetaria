@@ -52,13 +52,45 @@ export class ManagerService {
     );
   }
 
+  public async getManagerByCafeId(
+    cafeId: number,
+    current: Payload,
+  ): Promise<Manager[]> {
+    const cafe = await this.cafeService.getById(cafeId);
+    if (
+      current.username !== cafe.owner.username &&
+      current.role !== 'superadmin'
+    ) {
+      throw new ForbiddenException(
+        'You do not have permission to perform this action',
+      );
+    }
+    const manager = await this.managerRepository.find({
+      where: {
+        cafe: {
+          id: cafeId,
+          owner: {
+            username: current.username,
+            isDelete: false,
+          },
+        },
+        user: {
+          isDelete: false,
+        },
+      },
+      relations: ['user'],
+    });
+
+    return manager;
+  }
+
   public async getManagerByusernameAndCafeId(
     username: string,
     cafeId: number,
   ): Promise<Manager> {
     const manager = await this.managerRepository.findOne({
       where: {
-        manager: {
+        user: {
           username,
         },
         cafe: {

@@ -13,5 +13,5 @@ export class Manager {
   cafe: Cafe;
 
   @ManyToOne(() => User, (user) => user.managedCafes, { nullable: false })
-  manager: User;
+  user: User;
 }

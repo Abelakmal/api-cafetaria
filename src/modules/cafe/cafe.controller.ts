@@ -39,9 +39,11 @@ import { UpdateMenuDto } from './menu/dto/update-menu.dto';
 import {
   DocCreateManager,
   DocDeleteManager,
+  DocGetManager,
 } from './manager/manager.decorator';
 import { ManagerService } from './manager/manager.service';
 import { CreateUserManager } from './manager/dto/create-user-manager.dto';
+import { Manager } from './manager/manager.entity';
 
 @Controller('cafes')
 @ApiTags('cafe')
@@ -99,6 +101,17 @@ export class CafeController {
     @Request() req: any,
   ): Promise<void> {
     await this.cafeService.delete(id, req.user as Payload);
+  }
+
+  @Get(':cafeId/managers')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('superadmin', 'owner')
+  @DocGetManager()
+  public async getManagers(
+    @Param('cafeId') cafeId: number,
+    @Request() req: any,
+  ): Promise<Manager[]> {
+    return await this.managerService.getManagerByCafeId(cafeId, req.user);
   }
 
   @Post(':cafeId/managers')

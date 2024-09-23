@@ -55,6 +55,7 @@ export class UserController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @DocUpdateUser()
   public async updateUser(
     @Param('id') id: number,
@@ -65,6 +66,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @DocDeleteUser()
   public async deleteUser(
     @Param('id') id: number,
