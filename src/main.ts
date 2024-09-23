@@ -12,6 +12,7 @@ async function bootstrap(): Promise<string> {
   const options = new DocumentBuilder()
     .setTitle('Cafetaria API Documentation')
     .setVersion('1.0')
+    .setDescription('API requests are limited to 1 minute only 60 requests')
     .addServer(process.env.SERVER || 'http://localhost:8080')
     .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
     .build();
